@@ -1,0 +1,123 @@
+1.Importing libraries
+Purpose: Import necessary libraries for data manipulation, visualization, and building a regression model.
+pandas: Handles data in tabular form.
+numpy: For numerical computations.
+matplotlib.pyplot: Visualizes data and results.
+sklearn.model_selection.train_test_split: Splits data into training and testing sets.
+sklearn.linear_model.LinearRegression: Implements a simple linear regression model.
+sklearn.metrics: Evaluates the model's performance.
+
+2.Loading the dataset
+Purpose:
+Load the dataset (USA_Housing.csv) using pandas.
+Display the first few rows of the dataset to understand its structure.
+
+3.Selecting features and target variable  
+Purpose:
+Select the independent variable (Avg. Area Income) to predict the dependent variable (Price).
+X contains the feature, and Y contains the target.
+
+4.Spliting the data into training and testing sets
+Purpose:
+Split the dataset into training (80%) and testing (20%) sets.
+random_state ensures reproducibility of results.
+Training data is used to train the model, while testing data evaluates its performance.
+5.Creating and Training the model
+Purpose:
+Create a simple linear regression model.
+Train the model using X_train and Y_train.
+
+6.Making predictions
+Purpose:
+Use the trained model to predict the target variable (Price) for the test set (X_test).
+
+7.Evaluating the model
+Purpose:
+Mean Squared Error (MSE): Measures the average squared difference between actual and predicted values.
+R-squared (R²): Measures how well the model explains the variance in the target variable.
+
+8.Visualizing the regression line
+Purpose:
+Plot the actual data points (X_test vs Y_test) as a scatter plot.
+Overlay the regression line (X_test vs Y_pred) to visualize the model's fit.
+
+9.Visualizing the actual vs predicted values
+Purpose:
+Compare actual vs. predicted values visually.
+A perfect model would have all points lying on the 45° diagonal line.
+
+*Summary
+This code implements simple linear regression:
+
+1.Load and preprocess data.
+2.Split into training and testing sets.
+3.Train the model on the training set.
+4.Evaluate the model on the testing set using performance metrics.
+5.Visualize the regression line and compare actual vs. predicted values.
+
+  
+#Importing libraries
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
+
+# Load the dataset
+file_path = r"C:\Users\hp\Downloads\26 th oct HOUSING REGRESSOR\HOUSING REGRESSOR\USA_Housing.csv"
+df = pd.read_csv(file_path)
+
+# Display the first few rows of the dataset
+print(df.head())
+
+# Selecting a feature and target variable
+# Feature: 'Avg. Area Income', Target: 'Price'
+X = df[['Avg. Area Income']]  # Independent variable
+Y = df['Price']  # Dependent variable
+
+# Splitting the data into training and testing sets
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+
+# Create a linear regression model
+model = LinearRegression()
+
+# Train the model on the training data
+model.fit(X_train, Y_train)
+
+# Make predictions on the test set
+Y_pred = model.predict(X_test)
+
+# Evaluate the model
+mse = mean_squared_error(Y_test, Y_pred)
+r2 = r2_score(Y_test, Y_pred)
+
+print(f"Mean Squared Error: {mse}")
+print(f"R-squared: {r2}")
+
+# Visualize the regression line
+plt.figure(figsize=(12, 6))
+
+# Scatter plot of actual data
+plt.scatter(X_test, Y_test, color='blue', label='Actual values')
+
+# Regression line
+plt.plot(X_test, Y_pred, color='red', linewidth=2, label='Regression line')
+
+plt.title('Simple Linear Regression')
+plt.xlabel('Avg. Area Income')
+plt.ylabel('Price')
+plt.legend()
+plt.grid()
+plt.show()
+
+# Visualize Actual vs Predicted Values
+plt.figure(figsize=(12, 6))
+plt.scatter(Y_test, Y_pred, color='green', label='Actual vs Predicted')
+plt.plot([Y_test.min(), Y_test.max()], [Y_test.min(), Y_test.max()], color='red', linestyle='--', linewidth=2)
+plt.title('Actual vs Predicted Values')
+plt.xlabel('Actual Values')
+plt.ylabel('Predicted Values')
+plt.legend()
+plt.grid()
+plt.show()
